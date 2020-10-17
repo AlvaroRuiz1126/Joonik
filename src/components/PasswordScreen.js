@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { 
     Button, 
     Checkbox, 
@@ -7,6 +7,7 @@ import {
     makeStyles, 
     TextField 
 } from '@material-ui/core';
+import { getTokenByPassword } from '../services/apiService';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -14,8 +15,36 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function PasswordScreen() {
+const PasswordScreen = () => {
     const classes = useStyles();
+    const [passwordState, setPasswordState] = useState({
+        password: ''
+    });
+
+    const {password} = passwordState;
+
+    //useEffect(() => {}, [password]);
+
+    const handleInputChange = ({target}) => {
+        //console.log(target.value);
+        setPasswordState({
+            ...passwordState,
+            [target.name]: target.value
+        });
+    };
+
+    const handleSubmit = () => {
+        getTokenByPassword(passwordState)
+        .then(data => {
+            //console.log(data); // JSON data parsed by `data.json()` call
+            if(localStorage.getItem('token')){
+                localStorage.removeItem('token');
+            }
+
+            localStorage.setItem('token', JSON.stringify(data));
+        })
+    };
+
     return (
         <Grid
             container
@@ -29,7 +58,7 @@ export default function PasswordScreen() {
 
             <Grid item xs={6}>
                 <form>
-                    <TextField id="outlined-basic" label="Password" variant="outlined" />
+                    <TextField id="outlined-basic" label="Password" variant="outlined" name="password" value={password} onChange={handleInputChange} />
                     <FormControlLabel
                         value="end"
                         control={<Checkbox color="primary" />}
@@ -43,8 +72,8 @@ export default function PasswordScreen() {
                         alignItems="center"
                         justify="center"
                     >
-                        <Button className={classes.root} variant="contained" color="primary">
-                                SIGN IN
+                        <Button className={classes.root} variant="contained" color="primary" onClick={handleSubmit}>
+                            SIGN IN
                         </Button>
                     </Grid>
                 </form>
@@ -53,3 +82,5 @@ export default function PasswordScreen() {
         </Grid>
     );
 };
+
+export default PasswordScreen;

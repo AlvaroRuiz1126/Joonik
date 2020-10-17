@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import { TextField } from '@material-ui/core';
-
+import { Button, TextField } from '@material-ui/core';
+import { getTokenByEmail } from '../services/apiService';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
+        margin: 30
     },
     paper: {
         padding: theme.spacing(2),
@@ -25,8 +26,38 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EmailScreen() {
+const EmailScreen = () => {
+    const classes = useStyles();
+    const [emailState, setEmailState] = useState({
+        email: ''
+    });
 
+    const {email} = emailState;
+
+    useEffect(() => {}, [email]);
+
+    const handleInputChange = ({target}) => {
+        //console.log(target.value);
+        setEmailState({
+            ...emailState,
+            [target.name]: target.value
+        });
+    };
+
+    const handleSubmit = () => {
+        getTokenByEmail(emailState)
+        .then(data => {
+            //console.log(data); // JSON data parsed by `data.json()` call
+            if(localStorage.getItem('token')){
+                localStorage.removeItem('token');
+            }
+
+            localStorage.setItem('token', JSON.stringify(data));
+        }
+    ) 
+};
+
+    //useFetch();
     return (
         <Grid
             container
@@ -39,10 +70,15 @@ export default function EmailScreen() {
 
             <Grid item xs={10}>
                 <form>
-                    <TextField id="outlined-basic" label="Email" variant="outlined" />
+                    <TextField id="outlined-basic" label="Email" variant="outlined" name="email" value={email} autoComplete="off" onChange={handleInputChange} />
                 </form>
+                <Button className={classes.root} variant="contained" color="primary" onClick={handleSubmit}>
+                    NEXT
+                </Button>
             </Grid>
-
+            
         </Grid>
     );
-}
+};
+
+export default EmailScreen;

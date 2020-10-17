@@ -8,6 +8,8 @@ function App() {
   return (
     <div className="root">
       <div className="content">
+        <EmailScreen />
+        <PasswordScreen />
         <UserScreen />
       </div>
     </div>

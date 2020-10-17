@@ -1,6 +1,7 @@
 import React from 'react';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import { getPost } from '../services/apiService';
 import {
     Button,
     ButtonBase,
@@ -43,13 +44,21 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function UserScreen() {
+const UserScreen = () => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
 
     const handleClick = () => {
       setOpen(!open);
     };
+
+    const functionPost = () => {
+        getPost()
+        .then(data => console.log(data));
+    };
+
+    functionPost();
+
     return (
         <div>
             <ListItem button onClick={handleClick}>
@@ -86,13 +95,13 @@ export default function UserScreen() {
                                         <Grid item xs>
                                             <Typography gutterBottom variant="subtitle1">
                                                 Standard license
-                                        </Typography>
+                                            </Typography>
                                             <Typography variant="body2" gutterBottom>
                                                 Full resolution 1920x1080 • JPEG
-                                        </Typography>
+                                            </Typography>
                                             <Typography variant="body2" color="textSecondary">
                                                 ID: 1030114
-                                        </Typography>
+                                            </Typography>
                                         </Grid>
                                         <Grid item>
                                             <Typography variant="body2" style={{ cursor: 'pointer' }}>
@@ -187,3 +196,5 @@ export default function UserScreen() {
         </div >
     );
 };
+
+export default UserScreen;
