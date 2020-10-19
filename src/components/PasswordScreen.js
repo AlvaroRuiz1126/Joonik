@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { getTokenByPassword } from '../services/apiService';
 import { 
     Button, 
     Checkbox, 
@@ -7,7 +8,7 @@ import {
     makeStyles, 
     TextField 
 } from '@material-ui/core';
-import { getTokenByPassword } from '../services/apiService';
+import './../App.css';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const PasswordScreen = () => {
+const PasswordScreen = ({history}) => {
     const classes = useStyles();
     const [passwordState, setPasswordState] = useState({
         password: ''
@@ -26,7 +27,6 @@ const PasswordScreen = () => {
     //useEffect(() => {}, [password]);
 
     const handleInputChange = ({target}) => {
-        //console.log(target.value);
         setPasswordState({
             ...passwordState,
             [target.name]: target.value
@@ -36,13 +36,14 @@ const PasswordScreen = () => {
     const handleSubmit = () => {
         getTokenByPassword(passwordState)
         .then(data => {
-            //console.log(data); // JSON data parsed by `data.json()` call
             if(localStorage.getItem('token')){
                 localStorage.removeItem('token');
             }
 
             localStorage.setItem('token', JSON.stringify(data));
         })
+
+        history.push('/user');
     };
 
     return (

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { getTokenByEmail } from '../services/apiService';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import { Button, TextField } from '@material-ui/core';
-import { getTokenByEmail } from '../services/apiService';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const EmailScreen = () => {
+const EmailScreen = ({history}) => {
     const classes = useStyles();
     const [emailState, setEmailState] = useState({
         email: ''
@@ -34,50 +34,63 @@ const EmailScreen = () => {
 
     const {email} = emailState;
 
-    useEffect(() => {}, [email]);
-
     const handleInputChange = ({target}) => {
-        //console.log(target.value);
         setEmailState({
             ...emailState,
             [target.name]: target.value
         });
     };
 
+    const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+    const error = emailRegex.test(email);
+
     const handleSubmit = () => {
+        
         getTokenByEmail(emailState)
         .then(data => {
-            //console.log(data); // JSON data parsed by `data.json()` call
             if(localStorage.getItem('token')){
                 localStorage.removeItem('token');
             }
 
             localStorage.setItem('token', JSON.stringify(data));
-        }
-    ) 
-};
+        });
 
-    //useFetch();
+        history.push('/password');
+    };
+
+    useEffect(() => {}, [email]);
+
     return (
-        <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justify="center"
-            style={{ minHeight: '100vh' }}
-        >
+            <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justify="center"
+                style={{ minHeight: '100vh' }}
+            >
 
-            <Grid item xs={10}>
-                <form>
-                    <TextField id="outlined-basic" label="Email" variant="outlined" name="email" value={email} autoComplete="off" onChange={handleInputChange} />
-                </form>
-                <Button className={classes.root} variant="contained" color="primary" onClick={handleSubmit}>
-                    NEXT
-                </Button>
+                <Grid item xs={10}>
+                    <form>
+                        <TextField 
+                            id="outlined-basic" 
+                            id="standard-name"
+                            label="Name"
+                            value={email}
+                            name="email"
+                            onChange={handleInputChange}
+                            margin="normal"
+                            helperText={!error ? "Name needs to be an email" : "Perfect!"}
+                            error={error}
+                        />
+                    </form>
+
+                    <Button className={classes.root} variant="contained" color="primary" onClick={handleSubmit}>
+                        NEXT
+                    </Button>
+                </Grid>
+                
             </Grid>
-            
-        </Grid>
     );
 };
 

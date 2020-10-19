@@ -1,39 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { getPost } from '../services/apiService';
 import {
     Button,
-    ButtonBase,
+    CircularProgress,
     Collapse,
     Grid,
     List,
     ListItem,
     ListItemText,
     makeStyles,
-    Paper,
-    Typography
 } from '@material-ui/core';
+import CardContent from './CardContent';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         marginTop: 20
-    },
-    paper: {
-        padding: theme.spacing(2),
-        margin: 'auto',
-        maxWidth: 300,
-    },
-    image: {
-        width: 64,
-        height: 64,
-    },
-    img: {
-        margin: 'auto',
-        display: 'block',
-        maxWidth: '100%',
-        maxHeight: '100%',
     },
     button: {
         display: 'block',
@@ -46,23 +30,31 @@ const useStyles = makeStyles((theme) => ({
 
 const UserScreen = () => {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
+    const [post, setPost] = useState(null);
 
     const handleClick = () => {
       setOpen(!open);
     };
 
-    const functionPost = () => {
-        getPost()
-        .then(data => console.log(data));
+    if(post === null){
+        getPost().then(data => {
+            if(Array.isArray(data)){
+                setPost(data)
+                console.log(data, "HOLAAAA");
+            }
+        });
     };
 
-    functionPost();
+    useEffect(() => {
+    }, [open, post]);
 
+    console.log(post);
+    
     return (
         <div>
             <ListItem button onClick={handleClick}>
-                <ListItemText primary="User" />
+                <ListItemText primary={`${JSON.parse(localStorage.getItem('token')).name}`} />
                 {open ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={open} timeout="auto" unmountOnExit>
@@ -72,7 +64,7 @@ const UserScreen = () => {
                     </ListItem>
                 </List>
             </Collapse>
-
+        
             <Grid
                 container
                 spacing={0}
@@ -83,112 +75,11 @@ const UserScreen = () => {
             >
                 <Grid>
                     <div className={classes.root}>
-                        <Paper className={classes.paper}>
-                            <Grid container spacing={2}>
-                                <Grid item>
-                                    <ButtonBase className={classes.image}>
-                                        <img className={classes.img} alt="complex" src="/static/images/grid/complex.jpg" />
-                                    </ButtonBase>
-                                </Grid>
-                                <Grid item xs={12} sm container>
-                                    <Grid item xs container direction="column" spacing={2}>
-                                        <Grid item xs>
-                                            <Typography gutterBottom variant="subtitle1">
-                                                Standard license
-                                            </Typography>
-                                            <Typography variant="body2" gutterBottom>
-                                                Full resolution 1920x1080 • JPEG
-                                            </Typography>
-                                            <Typography variant="body2" color="textSecondary">
-                                                ID: 1030114
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="body2" style={{ cursor: 'pointer' }}>
-                                                Remove
-                                        </Typography>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="subtitle1">$19.00</Typography>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Paper>
-                    </div>
-
-                    <div className={classes.root}>
-                        <Paper className={classes.paper}>
-                            <Grid container spacing={2}>
-                                <Grid item>
-                                    <ButtonBase className={classes.image}>
-                                        <img className={classes.img} alt="complex" src="/static/images/grid/complex.jpg" />
-                                    </ButtonBase>
-                                </Grid>
-                                <Grid item xs={12} sm container>
-                                    <Grid item xs container direction="column" spacing={2}>
-                                        <Grid item xs>
-                                            <Typography gutterBottom variant="subtitle1">
-                                                Standard license
-                                        </Typography>
-                                            <Typography variant="body2" gutterBottom>
-                                                Full resolution 1920x1080 • JPEG
-                                        </Typography>
-                                            <Typography variant="body2" color="textSecondary">
-                                                ID: 1030114
-                                        </Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="body2" style={{ cursor: 'pointer' }}>
-                                                Remove
-                                        </Typography>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="subtitle1">$19.00</Typography>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Paper>
-                    </div>
-
-                    <div className={classes.root}>
-                        <Paper className={classes.paper}>
-                            <Grid container spacing={2}>
-                                <Grid item>
-                                    <ButtonBase className={classes.image}>
-                                        <img className={classes.img} alt="complex" src="/static/images/grid/complex.jpg" />
-                                    </ButtonBase>
-                                </Grid>
-                                <Grid item xs={12} sm container>
-                                    <Grid item xs container direction="column" spacing={2}>
-                                        <Grid item xs>
-                                            <Typography gutterBottom variant="subtitle1">
-                                                Standard license
-                                        </Typography>
-                                            <Typography variant="body2" gutterBottom>
-                                                Full resolution 1920x1080 • JPEG
-                                        </Typography>
-                                            <Typography variant="body2" color="textSecondary">
-                                                ID: 1030114
-                                        </Typography>
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="body2" style={{ cursor: 'pointer' }}>
-                                                Remove
-                                        </Typography>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid item>
-                                        <Typography variant="subtitle1">$19.00</Typography>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Paper>
+                        {post!==null ? post.map(item => (<CardContent key={item.title} image={item.image} title={item.title} content={item.content} />)) : <CircularProgress />}
                     </div>
                 </Grid>
 
-                <Button className={classes.button} variant="contained" color="primary">
+                <Button className={`${classes.button}`} variant="contained" color="primary">
                     ADD NEW
                 </Button>
 
