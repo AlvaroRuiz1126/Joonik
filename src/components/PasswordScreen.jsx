@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { getTokenByPassword } from '../services/apiService';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import { 
     Button, 
     Checkbox, 
@@ -23,6 +24,10 @@ const PasswordScreen = ({history}) => {
     });
 
     const {password} = passwordState;
+
+    const handleBack = () => {
+        history.push('/email');
+    };
 
     const handleInputChange = ({target}) => {
         setPasswordState({
@@ -50,6 +55,8 @@ const PasswordScreen = ({history}) => {
     };
 
     return (
+        <>
+        <ArrowBackIosIcon onClick={handleBack} />
         <Grid
             container
             spacing={0}
@@ -97,6 +104,7 @@ const PasswordScreen = ({history}) => {
             </Grid>
 
         </Grid>
+        </>
     );
 };
 
