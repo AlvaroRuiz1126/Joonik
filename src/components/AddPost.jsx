@@ -18,25 +18,44 @@ const useStyles = makeStyles((theme) => ({
         boxShadow: theme.shadows[5],
         padding: theme.spacing(2, 4, 3),
     },
+    input: {
+        display: 'none',
+    },
 }));
 
 const TransitionsModal = ({ open, handleModal }) => {
     const classes = useStyles();
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
+    const [postValues, setPostValues] = useState({
+        title: '',
+        content: '',
+        image: null
+    });
 
-    const handleInputChange = ({target}) => {
-        setTitle(target.value);
+    const {title, content, image} = postValues;
+
+    const handleInputChange = ({ target }) => {
+        setPostValues({
+            ...postValues,
+            [target.name]: target.value
+        });
     };
 
-    const handleTextAreaChange = ({target}) => {
-        setContent(target.value);
-    }
+    const handleFile = ({target}) => {
+        setPostValues({
+            ...postValues,
+            [target.name]: target.files[0]
+        });
+    };
 
     const handleSubmit = () => {
-        addPost(title).then(data => console.log(data));
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('content', content);
+        formData.append('image', image, image.name);
+        console.log(formData);
+        addPost(formData).then(data => console.log(data));
+        handleModal(false);
     };
-    console.log(content);
 
     return (
         <div>
@@ -68,13 +87,29 @@ const TransitionsModal = ({ open, handleModal }) => {
                             <TextField
                                 id="outlined-multiline-flexible"
                                 label="Post Content"
+                                name="content"
                                 multiline
                                 rowsMax={4}
                                 variant="outlined"
                                 margin="normal"
                                 value={content}
-                                onChange={handleTextAreaChange}
+                                onChange={handleInputChange}
                             />
+
+                            <input
+                                accept="image/*"
+                                className={classes.input}
+                                id="contained-button-file"
+                                multiple
+                                type="file"
+                                name="image"
+                                onChange={handleFile}
+                            />
+                            <label htmlFor="contained-button-file">
+                                <Button variant="contained" color="primary" component="span">
+                                    Upload
+                                </Button>
+                            </label>
 
                             <Button variant="contained" color="primary" onClick={handleSubmit}>
                                 Add Post

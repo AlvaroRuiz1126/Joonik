@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { getTokenByPassword } from '../services/apiService';
 import { 
     Button, 
@@ -23,8 +23,6 @@ const PasswordScreen = ({history}) => {
     });
 
     const {password} = passwordState;
-
-    //useEffect(() => {}, [password]);
 
     const handleInputChange = ({target}) => {
         setPasswordState({

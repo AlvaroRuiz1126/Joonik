@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import CardContent from './CardContent';
-import TransitionsModal from './Modal';
+import TransitionsModal from './AddPost';
 import { getPost } from '../services/apiService';
 import {
     Button,
@@ -39,10 +39,6 @@ const UserScreen = () => {
       setOpenUSer(!openUser);
     };
 
-    const handleModal = () => {
-        setOpenModal(!openModal)
-    }
-
     if(post === null){
         getPost().then(data => {
             if(Array.isArray(data)){
@@ -52,8 +48,7 @@ const UserScreen = () => {
         });
     };
 
-    useEffect(() => {
-    }, [openUser, post]);
+    useEffect(() => {}, [openUser, post, openModal]);
 
     console.log(post);
     
@@ -81,15 +76,15 @@ const UserScreen = () => {
             >
                 <Grid>
                     <div className={classes.root}>
-                        {post!==null ? post.map(item => (<CardContent key={item.title} image={item.image} title={item.title} content={item.content} />)) : <CircularProgress />}
+                        {post!==null ? post.map((item, i) => (<CardContent key={i} image={item.image} title={item.title} content={item.content} />)) : <CircularProgress />}
                     </div>
                 </Grid>
 
-                <Button className={`${classes.button}`} variant="contained" color="primary" onClick={handleModal}>
+                <Button className={`${classes.button}`} variant="contained" color="primary" onClick={() => setOpenModal(true)}>
                     ADD NEW
                 </Button>
 
-                {openModal && <TransitionsModal open={openModal} handleModal={handleModal} />}
+                {openModal && <TransitionsModal open={openModal} handleModal={setOpenModal} />}
 
             </Grid>
         </div >

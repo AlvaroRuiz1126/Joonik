@@ -38,14 +38,14 @@ export const getPost = async() => {
 }
 
 export const addPost = async(data) => {
+    console.log(data);
     const response = await fetch(`${urlBase}/posts`, {
-        method: 'POST', 
+        method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))?.token}`
         },
-        body: JSON.stringify(data)
-    });
+        body: data
+    })
 
     return response.json(); 
 }
