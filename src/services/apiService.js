@@ -36,3 +36,16 @@ export const getPost = async() => {
 
     return response.json(); 
 }
+
+export const addPost = async(data) => {
+    const response = await fetch(`${urlBase}/posts`, {
+        method: 'POST', 
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${JSON.parse(localStorage.getItem('token'))?.token}`
+        },
+        body: JSON.stringify(data)
+    });
+
+    return response.json(); 
+}

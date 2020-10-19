@@ -33,15 +33,20 @@ const PasswordScreen = ({history}) => {
         });
     };
 
-    const handleSubmit = () => {
-        getTokenByPassword(passwordState)
-        .then(data => {
-            if(localStorage.getItem('token')){
-                localStorage.removeItem('token');
-            }
+    const error = password;
 
-            localStorage.setItem('token', JSON.stringify(data));
-        })
+    const handleSubmit = () => {
+        if(error.length > 6){
+            getTokenByPassword(passwordState)
+            .then(data => {
+                if(localStorage.getItem('token')){
+                    localStorage.removeItem('token');
+                }
+
+                localStorage.setItem('token', JSON.stringify(data));
+                localStorage.removeItem('email');
+            });
+        }
 
         history.push('/user');
     };
@@ -55,17 +60,29 @@ const PasswordScreen = ({history}) => {
             justify="center"
             style={{ minHeight: '100vh' }}
         >
-            <p>email@email.com</p>
+            <p>{localStorage.getItem('email')}</p>
 
             <Grid item xs={6}>
                 <form>
-                    <TextField id="outlined-basic" label="Password" variant="outlined" name="password" value={password} onChange={handleInputChange} />
+                    <TextField 
+                        id="outlined-basic" 
+                        label="Password"
+                        value={password}
+                        name="password"
+                        type="password"
+                        onChange={handleInputChange}
+                        margin="normal"
+                        helperText={(error.length < 6) ? "Minium six characters" : "Perfect!"}
+                        error={error}
+                    />
+
                     <FormControlLabel
                         value="end"
                         control={<Checkbox color="primary" />}
                         label="Rememeber Me"
                         labelPlacement="end"
                     />
+
                     <Grid
                         container
                         spacing={0}
@@ -77,6 +94,7 @@ const PasswordScreen = ({history}) => {
                             SIGN IN
                         </Button>
                     </Grid>
+
                 </form>
             </Grid>
 

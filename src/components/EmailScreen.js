@@ -30,8 +30,7 @@ const EmailScreen = ({history}) => {
     const classes = useStyles();
     const [emailState, setEmailState] = useState({
         email: ''
-    });
-
+      });
     const {email} = emailState;
 
     const handleInputChange = ({target}) => {
@@ -53,6 +52,7 @@ const EmailScreen = ({history}) => {
             }
 
             localStorage.setItem('token', JSON.stringify(data));
+            localStorage.setItem('email', JSON.stringify(email));
         });
 
         history.push('/password');
@@ -74,8 +74,7 @@ const EmailScreen = ({history}) => {
                     <form>
                         <TextField 
                             id="outlined-basic" 
-                            id="standard-name"
-                            label="Name"
+                            label="Email"
                             value={email}
                             name="email"
                             onChange={handleInputChange}

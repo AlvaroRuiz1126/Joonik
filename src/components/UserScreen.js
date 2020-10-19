@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import CardContent from './CardContent';
+import TransitionsModal from './Modal';
 import { getPost } from '../services/apiService';
 import {
     Button,
@@ -12,7 +14,6 @@ import {
     ListItemText,
     makeStyles,
 } from '@material-ui/core';
-import CardContent from './CardContent';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,24 +31,29 @@ const useStyles = makeStyles((theme) => ({
 
 const UserScreen = () => {
     const classes = useStyles();
-    const [open, setOpen] = useState(false);
+    const [openUser, setOpenUSer] = useState(false);
+    const [openModal, setOpenModal] = useState(false)
     const [post, setPost] = useState(null);
 
     const handleClick = () => {
-      setOpen(!open);
+      setOpenUSer(!openUser);
     };
+
+    const handleModal = () => {
+        setOpenModal(!openModal)
+    }
 
     if(post === null){
         getPost().then(data => {
             if(Array.isArray(data)){
                 setPost(data)
-                console.log(data, "HOLAAAA");
+                //console.log(data, "HOLAAAA");
             }
         });
     };
 
     useEffect(() => {
-    }, [open, post]);
+    }, [openUser, post]);
 
     console.log(post);
     
@@ -55,9 +61,9 @@ const UserScreen = () => {
         <div>
             <ListItem button onClick={handleClick}>
                 <ListItemText primary={`${JSON.parse(localStorage.getItem('token')).name}`} />
-                {open ? <ExpandLess /> : <ExpandMore />}
+                {openUser ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-            <Collapse in={open} timeout="auto" unmountOnExit>
+            <Collapse in={openUser} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                     <ListItem button className={classes.nested}>
                         <ListItemText primary="Logout" />
@@ -79,9 +85,11 @@ const UserScreen = () => {
                     </div>
                 </Grid>
 
-                <Button className={`${classes.button}`} variant="contained" color="primary">
+                <Button className={`${classes.button}`} variant="contained" color="primary" onClick={handleModal}>
                     ADD NEW
                 </Button>
+
+                {openModal && <TransitionsModal open={openModal} handleModal={handleModal} />}
 
             </Grid>
         </div >
