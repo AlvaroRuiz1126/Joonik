@@ -21,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
     input: {
         display: 'none',
     },
+    root: {
+        marginRight: 10
+    },
 }));
 
 const TransitionsModal = ({ open, handleModal }) => {
@@ -31,7 +34,7 @@ const TransitionsModal = ({ open, handleModal }) => {
         image: null
     });
 
-    const {title, content, image} = postValues;
+    const { title, content, image } = postValues;
 
     const handleInputChange = ({ target }) => {
         setPostValues({
@@ -40,7 +43,7 @@ const TransitionsModal = ({ open, handleModal }) => {
         });
     };
 
-    const handleFile = ({target}) => {
+    const handleFile = ({ target }) => {
         setPostValues({
             ...postValues,
             [target.name]: target.files[0]
@@ -71,48 +74,58 @@ const TransitionsModal = ({ open, handleModal }) => {
                 }}
             >
                 <Fade in={open}>
-                    <div className={classes.paper}>
+                    <div className={`${classes.paper} modal`}>
                         <h2>Add a New Post</h2>
                         <form>
-                            <TextField
-                                id="outlined-flexible"
-                                label="Title"
-                                name="title"
-                                margin="normal"
-                                value={title}
-                                onChange={handleInputChange}
-                            />
+                            <div className="content-modal">
+                                <TextField
+                                    id="outlined-basic"
+                                    label="Title"
+                                    variant="outlined"
+                                    name="title"
+                                    value={title}
+                                    onChange={handleInputChange}
+                                    className={classes.root}
+                                />
 
-                            <TextField
-                                id="outlined-multiline-flexible"
-                                label="Post Content"
-                                name="content"
-                                multiline
-                                rowsMax={4}
-                                variant="outlined"
-                                margin="normal"
-                                value={content}
-                                onChange={handleInputChange}
-                            />
+                                <TextField
+                                    id="outlined-multiline-flexible"
+                                    label="Post Content"
+                                    name="content"
+                                    multiline
+                                    rowsMax={4}
+                                    variant="outlined"
+                                    margin="normal"
+                                    value={content}
+                                    onChange={handleInputChange}
+                                />
 
-                            <input
-                                accept="image/*"
-                                className={classes.input}
-                                id="contained-button-file"
-                                multiple
-                                type="file"
-                                name="image"
-                                onChange={handleFile}
-                            />
-                            <label htmlFor="contained-button-file">
-                                <Button variant="contained" color="primary" component="span">
-                                    Upload
+                                <input
+                                    accept="image/*"
+                                    className={`${classes.input} input-modal`}
+                                    id="contained-button-file"
+                                    multiple
+                                    type="file"
+                                    name="image"
+                                    onChange={handleFile}
+                                />
+
+                                <label htmlFor="contained-button-file" className="label-modal">
+                                    <Button variant="contained" color="primary" component="span">
+                                        Upload
                                 </Button>
-                            </label>
+                                </label>
+                            </div>
 
-                            <Button variant="contained" color="primary" onClick={handleSubmit}>
-                                Add Post
+                            <div className="button-modal">
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={handleSubmit}
+                                >
+                                    Add Post
                             </Button>
+                            </div>
 
                         </form>
                     </div>

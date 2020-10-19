@@ -79,7 +79,20 @@ const UserScreen = ({history}) => {
             >
                 <Grid>
                     <div className={classes.root}>
-                        {post!==null ? post.map((item, i) => (<CardContent key={i} className={classes.card} image={item.image} title={item.title} content={item.content} />)) : <CircularProgress />}
+                        {
+                            post!==null 
+                                ? 
+                                    post.map((item, i) => 
+                                        (<CardContent 
+                                            key={i} 
+                                            className={classes.card} 
+                                            image={item.image} 
+                                            title={item.title} 
+                                            content={item.content} 
+                                        />)) 
+                                : 
+                                <CircularProgress />
+                        }
                     </div>
                 </Grid>
 

@@ -1,24 +1,38 @@
 .root {
-    display: flex;
-    justify-content: center;
-    width: 100vw;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
 }
 
 .content {
-    width: 375px;
-    height: 812px;
+  width: 375px;
+  height: 812px;
 }
 
 .MuiGrid-container {
-    flex-wrap: nowrap!important;
+  flex-wrap: nowrap !important;
 }
 
 .MuiPaper-rounded {
-  border-radius: 10px!important;
+  border-radius: 10px !important;
 }
 
 .border {
   border: 1px solid grey;
+}
+
+.modal {
+  width: 375px;
+}
+
+.content-modal {
+  display: grid;
+  margin-bottom: 20px;
+}
+
+.label-modal,
+.button-modal {
+  text-align: center;
 }
 
 .slide-enter,
