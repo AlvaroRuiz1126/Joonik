@@ -18,7 +18,7 @@ import {
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        marginTop: 20
+        marginBottom: 20
     },
     button: {
         display: 'block',
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const UserScreen = () => {
+const UserScreen = ({history}) => {
     const classes = useStyles();
     const [openUser, setOpenUSer] = useState(false);
     const [openModal, setOpenModal] = useState(false)
@@ -39,11 +39,14 @@ const UserScreen = () => {
       setOpenUSer(!openUser);
     };
 
+    const handleModal = () => {
+        setOpenModal(!openModal);
+    }
+
     if(post === null){
         getPost().then(data => {
             if(Array.isArray(data)){
                 setPost(data)
-                //console.log(data, "HOLAAAA");
             }
         });
     };
@@ -60,7 +63,7 @@ const UserScreen = () => {
             </ListItem>
             <Collapse in={openUser} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    <ListItem button className={classes.nested}>
+                    <ListItem button className={classes.nested} onClick={() => history.push('/email')}>
                         <ListItemText primary="Logout" />
                     </ListItem>
                 </List>
@@ -76,15 +79,15 @@ const UserScreen = () => {
             >
                 <Grid>
                     <div className={classes.root}>
-                        {post!==null ? post.map((item, i) => (<CardContent key={i} image={item.image} title={item.title} content={item.content} />)) : <CircularProgress />}
+                        {post!==null ? post.map((item, i) => (<CardContent key={i} className={classes.card} image={item.image} title={item.title} content={item.content} />)) : <CircularProgress />}
                     </div>
                 </Grid>
 
-                <Button className={`${classes.button}`} variant="contained" color="primary" onClick={() => setOpenModal(true)}>
+                <Button className={`${classes.button}`} variant="contained" color="primary" onClick={handleModal}>
                     ADD NEW
                 </Button>
 
-                {openModal && <TransitionsModal open={openModal} handleModal={setOpenModal} />}
+                {openModal && <TransitionsModal open={openModal} handleModal={handleModal} />}
 
             </Grid>
         </div >

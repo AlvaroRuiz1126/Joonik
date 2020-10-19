@@ -54,7 +54,6 @@ const TransitionsModal = ({ open, handleModal }) => {
         formData.append('image', image, image.name);
         console.log(formData);
         addPost(formData).then(data => console.log(data));
-        handleModal(false);
     };
 
     return (

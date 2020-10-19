@@ -1,5 +1,5 @@
-import { ButtonBase, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 import React from 'react'
+import { ButtonBase, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -17,13 +17,16 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: '100%',
         maxHeight: '100%',
     },
+    rounded: {
+        marginBottom: 10
+    }
 }));
 
 const CardContent = ({image, title, content}) => {
     const classes = useStyles();
     
     return (
-        <Paper className={classes.paper}>
+        <Paper className={`${classes.paper} ${classes.rounded} border`}>
             <Grid container spacing={2}>
                 <Grid item>
                     <ButtonBase className={classes.image}>

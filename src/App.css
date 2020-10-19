@@ -13,6 +13,14 @@
     flex-wrap: nowrap!important;
 }
 
+.MuiPaper-rounded {
+  border-radius: 10px!important;
+}
+
+.border {
+  border: 1px solid grey;
+}
+
 .slide-enter,
 .slide-exit {
   transition: transform 1000ms ease-out;
