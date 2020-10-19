@@ -56,7 +56,7 @@ const PasswordScreen = ({history}) => {
 
     return (
         <>
-        <ArrowBackIosIcon onClick={handleBack} />
+        <ArrowBackIosIcon className="icon" onClick={handleBack} />
         <Grid
             container
             spacing={0}

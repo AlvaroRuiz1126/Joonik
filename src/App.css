@@ -17,6 +17,10 @@
   border-radius: 10px !important;
 }
 
+.icon {
+  cursor: pointer;
+}
+
 .border {
   border: 1px solid grey;
 }
