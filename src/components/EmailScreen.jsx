@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { getTokenByEmail } from '../services/apiService';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import { Button, TextField } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-        margin: 30
+        margin: 30,
     },
     paper: {
         padding: theme.spacing(2),
@@ -24,6 +24,11 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: '100%',
         maxHeight: '100%',
     },
+    btn: {
+        backgroundColor: 'dimgrey',
+        borderRadius: 20,
+        fontFamily: 'Poppins, sans-serif',
+    }
 }));
 
 const EmailScreen = ({history}) => {
@@ -64,29 +69,29 @@ const EmailScreen = ({history}) => {
             <Grid
                 container
                 spacing={0}
-                direction="column"
+                direction="row"
                 alignItems="center"
                 justify="center"
                 style={{ minHeight: '100vh' }}
             >
 
                 <Grid item xs={10}>
-                    <form>
-                        <TextField 
-                            id="outlined-basic" 
-                            label="Email"
+                    <form className="form">
+                        <label name="email">Email</label>
+                        <input
+                            className="input" 
                             value={email}
                             name="email"
                             onChange={handleInputChange}
                             margin="normal"
-                            helperText={!error ? "Name needs to be an email" : "Perfect!"}
                             error={error}
                         />
+
+                        <Button className={`${classes.root} ${classes.btn}`} variant="contained" color="primary" onClick={handleSubmit}>
+                            NEXT
+                        </Button>
                     </form>
 
-                    <Button className={classes.root} variant="contained" color="primary" onClick={handleSubmit}>
-                        NEXT
-                    </Button>
                 </Grid>
                 
             </Grid>

@@ -7,13 +7,20 @@ import {
     FormControlLabel, 
     Grid, 
     makeStyles, 
-    TextField 
 } from '@material-ui/core';
 import './../App.css';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         margin: 30
+    },
+    btn: {
+        backgroundColor: 'dimgrey',
+        borderRadius: 20,
+        fontFamily: 'Poppins, sans-serif',
+    },
+    label: {
+        fontFamily: 'Poppins, sans-serif',
     }
 }));
 
@@ -60,31 +67,30 @@ const PasswordScreen = ({history}) => {
         <Grid
             container
             spacing={0}
-            direction="column"
+            direction="row"
             alignItems="center"
             justify="center"
             style={{ minHeight: '100vh' }}
         >
-            <p>{localStorage.getItem('email')}</p>
+            <Grid item xs={10} className="align-center">
+                <p>{localStorage.getItem('email')}</p>
 
-            <Grid item xs={6}>
-                <form>
-                    <TextField 
-                        id="outlined-basic" 
+                <form className="form">
+                    <label name="password">PASSWORD</label>
+                    <input
+                        className="input"
                         label="Password"
                         value={password}
                         name="password"
                         type="password"
                         onChange={handleInputChange}
-                        margin="normal"
-                        helperText={(error.length < 6) ? "Minium six characters" : "Perfect!"}
-                        error={error}
                     />
 
                     <FormControlLabel
+                        className={classes.label}
                         value="end"
                         control={<Checkbox color="primary" />}
-                        label="Rememeber Me"
+                        label="Remember Me"
                         labelPlacement="end"
                     />
 
@@ -95,7 +101,7 @@ const PasswordScreen = ({history}) => {
                         alignItems="center"
                         justify="center"
                     >
-                        <Button className={classes.root} variant="contained" color="primary" onClick={handleSubmit}>
+                        <Button className={`${classes.root} ${classes.btn}`} variant="contained" color="primary" onClick={handleSubmit}>
                             SIGN IN
                         </Button>
                     </Grid>

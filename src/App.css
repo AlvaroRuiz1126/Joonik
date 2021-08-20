@@ -1,3 +1,7 @@
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
 .root {
   display: flex;
   justify-content: center;
@@ -7,6 +11,29 @@
 .content {
   width: 375px;
   height: 812px;
+}
+
+.form {
+  display: grid;
+}
+
+.form label {
+  text-align: left;
+}
+
+.input {
+  margin-top: 10px;
+  border: 1px solid #666666;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.MuiButton-containedPrimary {
+  background-color: silver;
 }
 
 .MuiGrid-container {
